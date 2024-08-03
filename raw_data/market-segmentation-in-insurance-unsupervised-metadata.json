@@ -1,0 +1,417 @@
+{
+    "@context": {
+        "@language": "en",
+        "@vocab": "https://schema.org/",
+        "citeAs": "cr:citeAs",
+        "column": "cr:column",
+        "conformsTo": "dct:conformsTo",
+        "cr": "http://mlcommons.org/croissant/",
+        "data": {
+            "@id": "cr:data",
+            "@type": "@json"
+        },
+        "dataBiases": "cr:dataBiases",
+        "dataCollection": "cr:dataCollection",
+        "dataType": {
+            "@id": "cr:dataType",
+            "@type": "@vocab"
+        },
+        "dct": "http://purl.org/dc/terms/",
+        "extract": "cr:extract",
+        "field": "cr:field",
+        "fileProperty": "cr:fileProperty",
+        "fileObject": "cr:fileObject",
+        "fileSet": "cr:fileSet",
+        "format": "cr:format",
+        "includes": "cr:includes",
+        "isEnumeration": "cr:isEnumeration",
+        "jsonPath": "cr:jsonPath",
+        "key": "cr:key",
+        "md5": "cr:md5",
+        "parentField": "cr:parentField",
+        "path": "cr:path",
+        "personalSensitiveInformation": "cr:personalSensitiveInformation",
+        "recordSet": "cr:recordSet",
+        "references": "cr:references",
+        "regex": "cr:regex",
+        "repeated": "cr:repeated",
+        "replace": "cr:replace",
+        "sc": "https://schema.org/",
+        "separator": "cr:separator",
+        "source": "cr:source",
+        "subField": "cr:subField",
+        "transform": "cr:transform",
+        "wd": "https://www.wikidata.org/wiki/"
+    },
+    "alternateName": "Market Segmentation in Insurance Unsupervised Learning",
+    "conformsTo": "http://mlcommons.org/croissant/1.0",
+    "license": {
+        "@type": "sc:CreativeWork",
+        "name": "Database: Open Database, Contents: Database Contents",
+        "url": "http://opendatacommons.org/licenses/dbcl/1.0/"
+    },
+    "distribution": [
+        {
+            "contentUrl": "https://www.kaggle.com/api/v1/datasets/download/jillanisofttech/market-segmentation-in-insurance-unsupervised?datasetVersionNumber=1",
+            "contentSize": "340.324 KB",
+            "md5": "ngJTC0\u002BFN8p6/iZSOAfEwA==",
+            "encodingFormat": "application/zip",
+            "@id": "archive.zip",
+            "@type": "cr:FileObject",
+            "name": "archive.zip",
+            "description": "Archive containing all the contents of the Market Segmentation in Insurance Unsupervised dataset"
+        },
+        {
+            "contentUrl": "Customer Data.csv",
+            "containedIn": {
+                "@id": "archive.zip"
+            },
+            "encodingFormat": "application/vnd.ms-excel",
+            "@id": "Customer\u002BData.csv_fileobject",
+            "@type": "cr:FileObject",
+            "name": "Customer Data.csv",
+            "description": "This File is all about Market Segmentation in Insurance Unsupervised Machine Learning.\nAll the data has not dependent variable."
+        }
+    ],
+    "recordSet": [
+        {
+            "field": [
+                {
+                    "dataType": [
+                        "sc:Text"
+                    ],
+                    "source": {
+                        "fileObject": {
+                            "@id": "Customer\u002BData.csv_fileobject"
+                        },
+                        "extract": {
+                            "column": "CUST_ID"
+                        }
+                    },
+                    "@id": "Customer\u002BData.csv/CUST_ID",
+                    "@type": "cr:Field",
+                    "name": "CUST_ID",
+                    "description": "ID"
+                },
+                {
+                    "dataType": [
+                        "sc:Float"
+                    ],
+                    "source": {
+                        "fileObject": {
+                            "@id": "Customer\u002BData.csv_fileobject"
+                        },
+                        "extract": {
+                            "column": "BALANCE"
+                        }
+                    },
+                    "@id": "Customer\u002BData.csv/BALANCE",
+                    "@type": "cr:Field",
+                    "name": "BALANCE",
+                    "description": "BALANCE"
+                },
+                {
+                    "dataType": [
+                        "sc:Float"
+                    ],
+                    "source": {
+                        "fileObject": {
+                            "@id": "Customer\u002BData.csv_fileobject"
+                        },
+                        "extract": {
+                            "column": "BALANCE_FREQUENCY"
+                        }
+                    },
+                    "@id": "Customer\u002BData.csv/BALANCE_FREQUENCY",
+                    "@type": "cr:Field",
+                    "name": "BALANCE_FREQUENCY",
+                    "description": "BALANCE_FREQUENCY\n"
+                },
+                {
+                    "dataType": [
+                        "sc:Float"
+                    ],
+                    "source": {
+                        "fileObject": {
+                            "@id": "Customer\u002BData.csv_fileobject"
+                        },
+                        "extract": {
+                            "column": "PURCHASES"
+                        }
+                    },
+                    "@id": "Customer\u002BData.csv/PURCHASES",
+                    "@type": "cr:Field",
+                    "name": "PURCHASES",
+                    "description": "PURCHASES"
+                },
+                {
+                    "dataType": [
+                        "sc:Float"
+                    ],
+                    "source": {
+                        "fileObject": {
+                            "@id": "Customer\u002BData.csv_fileobject"
+                        },
+                        "extract": {
+                            "column": "ONEOFF_PURCHASES"
+                        }
+                    },
+                    "@id": "Customer\u002BData.csv/ONEOFF_PURCHASES",
+                    "@type": "cr:Field",
+                    "name": "ONEOFF_PURCHASES",
+                    "description": "ONEOFF_PURCHASES\n"
+                },
+                {
+                    "dataType": [
+                        "sc:Float"
+                    ],
+                    "source": {
+                        "fileObject": {
+                            "@id": "Customer\u002BData.csv_fileobject"
+                        },
+                        "extract": {
+                            "column": "INSTALLMENTS_PURCHASES"
+                        }
+                    },
+                    "@id": "Customer\u002BData.csv/INSTALLMENTS_PURCHASES",
+                    "@type": "cr:Field",
+                    "name": "INSTALLMENTS_PURCHASES",
+                    "description": "INSTALLMENTS_PU"
+                },
+                {
+                    "dataType": [
+                        "sc:Float"
+                    ],
+                    "source": {
+                        "fileObject": {
+                            "@id": "Customer\u002BData.csv_fileobject"
+                        },
+                        "extract": {
+                            "column": "CASH_ADVANCE"
+                        }
+                    },
+                    "@id": "Customer\u002BData.csv/CASH_ADVANCE",
+                    "@type": "cr:Field",
+                    "name": "CASH_ADVANCE",
+                    "description": "CASH_ADVANCE"
+                },
+                {
+                    "dataType": [
+                        "sc:Float"
+                    ],
+                    "source": {
+                        "fileObject": {
+                            "@id": "Customer\u002BData.csv_fileobject"
+                        },
+                        "extract": {
+                            "column": "PURCHASES_FREQUENCY"
+                        }
+                    },
+                    "@id": "Customer\u002BData.csv/PURCHASES_FREQUENCY",
+                    "@type": "cr:Field",
+                    "name": "PURCHASES_FREQUENCY",
+                    "description": "PURCHASES_FREQUENCY\n"
+                },
+                {
+                    "dataType": [
+                        "sc:Float"
+                    ],
+                    "source": {
+                        "fileObject": {
+                            "@id": "Customer\u002BData.csv_fileobject"
+                        },
+                        "extract": {
+                            "column": "ONEOFF_PURCHASES_FREQUENCY"
+                        }
+                    },
+                    "@id": "Customer\u002BData.csv/ONEOFF_PURCHASES_FREQUENCY",
+                    "@type": "cr:Field",
+                    "name": "ONEOFF_PURCHASES_FREQUENCY",
+                    "description": "ONEOFF_PURCHASES_FREQUENCY\n"
+                },
+                {
+                    "dataType": [
+                        "sc:Float"
+                    ],
+                    "source": {
+                        "fileObject": {
+                            "@id": "Customer\u002BData.csv_fileobject"
+                        },
+                        "extract": {
+                            "column": "PURCHASES_INSTALLMENTS_FREQUENCY"
+                        }
+                    },
+                    "@id": "Customer\u002BData.csv/PURCHASES_INSTALLMENTS_FREQUENCY",
+                    "@type": "cr:Field",
+                    "name": "PURCHASES_INSTALLMENTS_FREQUENCY",
+                    "description": "PURCHASES_INSTALLMENTS_FREQUENCY\n"
+                },
+                {
+                    "dataType": [
+                        "sc:Float"
+                    ],
+                    "source": {
+                        "fileObject": {
+                            "@id": "Customer\u002BData.csv_fileobject"
+                        },
+                        "extract": {
+                            "column": "CASH_ADVANCE_FREQUENCY"
+                        }
+                    },
+                    "@id": "Customer\u002BData.csv/CASH_ADVANCE_FREQUENCY",
+                    "@type": "cr:Field",
+                    "name": "CASH_ADVANCE_FREQUENCY"
+                },
+                {
+                    "dataType": [
+                        "sc:Integer"
+                    ],
+                    "source": {
+                        "fileObject": {
+                            "@id": "Customer\u002BData.csv_fileobject"
+                        },
+                        "extract": {
+                            "column": "CASH_ADVANCE_TRX"
+                        }
+                    },
+                    "@id": "Customer\u002BData.csv/CASH_ADVANCE_TRX",
+                    "@type": "cr:Field",
+                    "name": "CASH_ADVANCE_TRX"
+                },
+                {
+                    "dataType": [
+                        "sc:Integer"
+                    ],
+                    "source": {
+                        "fileObject": {
+                            "@id": "Customer\u002BData.csv_fileobject"
+                        },
+                        "extract": {
+                            "column": "PURCHASES_TRX"
+                        }
+                    },
+                    "@id": "Customer\u002BData.csv/PURCHASES_TRX",
+                    "@type": "cr:Field",
+                    "name": "PURCHASES_TRX"
+                },
+                {
+                    "dataType": [
+                        "sc:Integer"
+                    ],
+                    "source": {
+                        "fileObject": {
+                            "@id": "Customer\u002BData.csv_fileobject"
+                        },
+                        "extract": {
+                            "column": "CREDIT_LIMIT"
+                        }
+                    },
+                    "@id": "Customer\u002BData.csv/CREDIT_LIMIT",
+                    "@type": "cr:Field",
+                    "name": "CREDIT_LIMIT"
+                },
+                {
+                    "dataType": [
+                        "sc:Float"
+                    ],
+                    "source": {
+                        "fileObject": {
+                            "@id": "Customer\u002BData.csv_fileobject"
+                        },
+                        "extract": {
+                            "column": "PAYMENTS"
+                        }
+                    },
+                    "@id": "Customer\u002BData.csv/PAYMENTS",
+                    "@type": "cr:Field",
+                    "name": "PAYMENTS"
+                },
+                {
+                    "dataType": [
+                        "sc:Float"
+                    ],
+                    "source": {
+                        "fileObject": {
+                            "@id": "Customer\u002BData.csv_fileobject"
+                        },
+                        "extract": {
+                            "column": "MINIMUM_PAYMENTS"
+                        }
+                    },
+                    "@id": "Customer\u002BData.csv/MINIMUM_PAYMENTS",
+                    "@type": "cr:Field",
+                    "name": "MINIMUM_PAYMENTS"
+                },
+                {
+                    "dataType": [
+                        "sc:Float"
+                    ],
+                    "source": {
+                        "fileObject": {
+                            "@id": "Customer\u002BData.csv_fileobject"
+                        },
+                        "extract": {
+                            "column": "PRC_FULL_PAYMENT"
+                        }
+                    },
+                    "@id": "Customer\u002BData.csv/PRC_FULL_PAYMENT",
+                    "@type": "cr:Field",
+                    "name": "PRC_FULL_PAYMENT"
+                },
+                {
+                    "dataType": [
+                        "sc:Integer"
+                    ],
+                    "source": {
+                        "fileObject": {
+                            "@id": "Customer\u002BData.csv_fileobject"
+                        },
+                        "extract": {
+                            "column": "TENURE"
+                        }
+                    },
+                    "@id": "Customer\u002BData.csv/TENURE",
+                    "@type": "cr:Field",
+                    "name": "TENURE"
+                }
+            ],
+            "@id": "Customer\u002BData.csv",
+            "@type": "cr:RecordSet",
+            "name": "Customer Data.csv",
+            "description": "This File is all about Market Segmentation in Insurance Unsupervised Machine Learning.\nAll the data has not dependent variable."
+        }
+    ],
+    "version": 1,
+    "keywords": [
+        "audience \u003E advanced",
+        "audience \u003E intermediate",
+        "packages \u003E numpy",
+        "technique \u003E decision tree",
+        "subject \u003E people and society \u003E business"
+    ],
+    "isAccessibleForFree": true,
+    "includedInDataCatalog": {
+        "@type": "sc:DataCatalog",
+        "name": "Kaggle",
+        "url": "https://www.kaggle.com"
+    },
+    "creator": {
+        "@type": "sc:Person",
+        "name": "Jillani Soft Tech",
+        "url": "/jillanisofttech",
+        "image": "https://storage.googleapis.com/kaggle-avatars/thumbnails/7237430-kg.jpeg"
+    },
+    "publisher": {
+        "@type": "sc:Organization",
+        "name": "Kaggle",
+        "url": "https://www.kaggle.com/organizations/kaggle",
+        "image": "https://storage.googleapis.com/kaggle-organizations/4/thumbnail.png"
+    },
+    "thumbnailUrl": "https://storage.googleapis.com/kaggle-datasets-images/1777806/2901065/11d0b725ac7613cd5ba71fcfe594094f/dataset-card.png?t=2021-12-08-05-45-01",
+    "dateModified": "2021-12-08T05:37:26.51",
+    "datePublished": "2021-12-08T05:37:26.51",
+    "@type": "sc:Dataset",
+    "name": "Market Segmentation in Insurance Unsupervised",
+    "url": "https://www.kaggle.com/datasets/jillanisofttech/market-segmentation-in-insurance-unsupervised/versions/1",
+    "description": "# WHAT IS MARKET SEGMENTATION?\nIn marketing, market segmentation is the process of dividing a broad consumer or business market, normally consisting of existing and potential customers, into subgroups of consumers based on some type of shared characteristics.\n\n# Objective :\nThis case requires developing a customer segmentation to give recommendations like saving plans, loans, wealth management, etc. on target customer groups.\n\n# Dataset\nThe sample Dataset summarizes the usage behavior of about 9000 active credit cardholders during the last 6 months. The file is at a customer level with 18 behavioral variables.\nVariables of Dataset\nBalance\nBalance Frequency\nPurchases\nOne-off Purchases\nInstallment Purchases\nCash Advance\nPurchases Frequency\nOne-off Purchases Frequency\nPurchases Installments Frequency\nCash Advance Frequency\nCash Advance TRX\nPurchases TRX\nCredit Limit\nPayments\nMinimum Payments\nPRC Full payment\nTenure\nCluster\n\nThe sample Dataset summarizes the usage behavior of about 9000 active credit cardholders during the last 6 months. The file is at a customer level with 18 behavioral variables."
+}
