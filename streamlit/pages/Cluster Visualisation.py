@@ -2,14 +2,11 @@ import streamlit as st
 import pandas as pd
 import sys
 
-import matplotlib.pyplot as plt
-import altair as alt
 import plotly.express as px
-import plotly.graph_objects as go
 
 st.set_page_config(
-    page_title = 'Cluster Visualisation',   # Title of the browser tab
-    page_icon = '📊',                  # Favicon
+    page_title = 'Cluster Visualisation',
+    page_icon = '📊',
     layout = 'wide',                   # Use full-width layout
     initial_sidebar_state = 'collapsed' # Sidebar state: "expanded", "collapsed", "auto"
 )
@@ -50,10 +47,7 @@ if 'initialised' not in st.session_state:
     st.session_state.initialised = True
 
 # Title for the app
-st.title('Cluster Visualisation')
-
-# TODO: Remove
-# del st.session_state.initialised
+st.title('Cluster Visualisation', anchor = False)
 
 # Step 1: Model Selection
 st.multiselect(
@@ -162,105 +156,180 @@ if st.session_state.selected_models:
                     st.session_state.model_params['optics']['Minimum Samples'] = minsamples_slider
                     st.session_state.model_params['optics']['Xi'] = xi_slider
 
-# Step 2: Dataset Selection
 if st.session_state.selected_models:
-    with st.expander('Dataset'):
-        st.radio(
-            label = "Select a dataset:",
-            options = ['Original Dataset', 'PCA Dataset', 't-SNE Dataset', 'UMAP Dataset'],
-        horizontal = True,
-        captions = ['No changes', 'Principal Component Analysis', 't-Stochastic Neighbouring Embedding', 'Uniform Manifold Approximation and Projection (UMAP)'],
-        index = None,
-        key = 'selected_dataset')
+    plot_tab, score_tab = st.tabs(
+        tabs = ['📈 Charts', '🎯 Scores']
+    )
 
-if 'selected_dataset' not in st.session_state:
-    st.session_state.selected_dataset = None
+    with plot_tab:
+        # Step 2: Dataset Selection
+        with st.expander('Dataset'):
+            st.radio(
+                label = "Select a dataset:",
+                options = ['Original Dataset', 'PCA Dataset', 't-SNE Dataset', 'UMAP Dataset'],
+            horizontal = True,
+            captions = ['No changes', 'Principal Component Analysis', 't-Stochastic Neighbouring Embedding', 'Uniform Manifold Approximation and Projection (UMAP)'],
+            index = None,
+            key = 'selected_dataset')
 
-# Step 3: Column Selection
-if st.session_state.selected_dataset:
-    st.multiselect(
-        label = 'Select your favourite features:',
-        options = st.session_state[st.session_state.selected_dataset].columns,
-        max_selections = 2,
-        help = 'Select up to 3 features to compare',
-        placeholder = 'Select up to 2 features',
-        key = 'selected_features')
+        if 'selected_dataset' not in st.session_state:
+            st.session_state.selected_dataset = None
 
-# Step 4: Display Results
-if 'selected_features' in st.session_state and st.session_state.selected_features and st.session_state.selected_dataset:
-    sections = st.columns(len(st.session_state.selected_models))
+        # Step 3: Column Selection
+        if st.session_state.selected_dataset:
+            st.multiselect(
+                label = 'Select your favourite features:',
+                options = st.session_state[st.session_state.selected_dataset].columns,
+                max_selections = 3,
+                help = 'Select up to 3 features to compare',
+                placeholder = 'Select up to 2 features',
+                key = 'selected_features')
 
-    selected_features = st.session_state.selected_features
-    df_selected = st.session_state[st.session_state.selected_dataset][selected_features]
-    for model, section in zip(st.session_state.selected_models, sections):
-        with section:
+        # Step 4: Display Results
+        if 'selected_features' in st.session_state and st.session_state.selected_features and st.session_state.selected_dataset and st.session_state.selected_models:
+            sections = st.columns(len(st.session_state.selected_models))
 
-            # Need plot graphs here
-            model_params = st.session_state.model_params[
-                'agg' if model == 'Agglomerative' else
-                'ms' if model == 'Mean Shift' else
-                'birch' if model == 'BIRCH' else
-                'hdbscan' if model == 'HDBSCAN' else
-                'optics'
-            ]
+            selected_features = st.session_state.selected_features
+            df_selected = st.session_state[st.session_state.selected_dataset][selected_features]
+            for model, section in zip(st.session_state.selected_models, sections):
+                with section:
 
-            if model == 'Agglomerative':
-                df_clusters = (
-                    st.session_state['Cluster Dataset'][[f'agg_ncluster{model_params["Number of Clusters"]}_linkage{model_params["Linkage Method"].lower()}']]
-                    .rename(columns = {f'agg_ncluster{model_params["Number of Clusters"]}_linkage{model_params["Linkage Method"].lower()}': 'cluster'})
-                )
-                df_score = st.session_state['Scores Dataset'][f'agg_ncluster{model_params["Number of Clusters"]}_linkage{model_params["Linkage Method"].lower()}']
-            elif model == 'Mean Shift':
-                df_clusters = (
-                    st.session_state['Cluster Dataset'][[f'ms_quantile{model_params["Quantile"]}']]
-                    .rename(columns = {f'ms_quantile{model_params["Quantile"]}': 'cluster'})
-                )
-                df_score = st.session_state['Scores Dataset'][f'ms_quantile{model_params["Quantile"]}']
-            elif model == 'BIRCH':
-                df_clusters = (
-                    st.session_state['Cluster Dataset'][[f'birch_threshold{model_params["Threshold"]}_factor{model_params["Branching Factor"]}_ncluster{model_params["Number of Clusters"]}']]
-                    .rename(columns = {f'birch_threshold{model_params["Threshold"]}_factor{model_params["Branching Factor"]}_ncluster{model_params["Number of Clusters"]}': 'cluster'})
-                )
-                df_score = st.session_state['Scores Dataset'][f'birch_threshold{model_params["Threshold"]}_factor{model_params["Branching Factor"]}_ncluster{model_params["Number of Clusters"]}']
-            elif model == 'HDBSCAN':
-                df_clusters = (
-                    st.session_state['Cluster Dataset'][[f'hdbscan_mincluster{model_params["Minimum Cluster Size"]}_minsample{model_params["Minimum Samples"]}']]
-                    .rename(columns = {f'hdbscan_mincluster{model_params["Minimum Cluster Size"]}_minsample{model_params["Minimum Samples"]}': 'cluster'})
-                )
-                df_score = st.session_state['Scores Dataset'][f'hdbscan_mincluster{model_params["Minimum Cluster Size"]}_minsample{model_params["Minimum Samples"]}']
-            elif model == 'OPTICS':
-                df_clusters = (
-                    st.session_state['Cluster Dataset'][[f'optics_minsamp{model_params["Minimum Samples"]}_xi{model_params["Xi"]}']]
-                    .rename(columns = {f'optics_minsamp{model_params["Minimum Samples"]}_xi{model_params["Xi"]}': 'cluster'})
-                )
-                df_score = st.session_state['Scores Dataset'][f'optics_minsamp{model_params["Minimum Samples"]}_xi{model_params["Xi"]}']
+                    # Need plot graphs here
+                    model_params = st.session_state.model_params[
+                        'agg' if model == 'Agglomerative' else
+                        'ms' if model == 'Mean Shift' else
+                        'birch' if model == 'BIRCH' else
+                        'hdbscan' if model == 'HDBSCAN' else
+                        'optics'
+                    ]
 
-            chart_data = pd.concat([df_selected, df_clusters], axis = 1)
+                    if model == 'Agglomerative':
+                        df_clusters = (
+                            st.session_state['Cluster Dataset'][[f'agg_ncluster{model_params["Number of Clusters"]}_linkage{model_params["Linkage Method"].lower()}']]
+                            .rename(columns = {f'agg_ncluster{model_params["Number of Clusters"]}_linkage{model_params["Linkage Method"].lower()}': 'cluster'})
+                        )
+                    elif model == 'Mean Shift':
+                        df_clusters = (
+                            st.session_state['Cluster Dataset'][[f'ms_quantile{model_params["Quantile"]}']]
+                            .rename(columns = {f'ms_quantile{model_params["Quantile"]}': 'cluster'})
+                        )
+                    elif model == 'BIRCH':
+                        df_clusters = (
+                            st.session_state['Cluster Dataset'][[f'birch_threshold{model_params["Threshold"]}_factor{model_params["Branching Factor"]}_ncluster{model_params["Number of Clusters"]}']]
+                            .rename(columns = {f'birch_threshold{model_params["Threshold"]}_factor{model_params["Branching Factor"]}_ncluster{model_params["Number of Clusters"]}': 'cluster'})
+                        )
+                    elif model == 'HDBSCAN':
+                        df_clusters = (
+                            st.session_state['Cluster Dataset'][[f'hdbscan_mincluster{model_params["Minimum Cluster Size"]}_minsample{model_params["Minimum Samples"]}']]
+                            .rename(columns = {f'hdbscan_mincluster{model_params["Minimum Cluster Size"]}_minsample{model_params["Minimum Samples"]}': 'cluster'})
+                        )
+                    elif model == 'OPTICS':
+                        df_clusters = (
+                            st.session_state['Cluster Dataset'][[f'optics_minsamp{model_params["Minimum Samples"]}_xi{model_params["Xi"]}']]
+                            .rename(columns = {f'optics_minsamp{model_params["Minimum Samples"]}_xi{model_params["Xi"]}': 'cluster'})
+                        )
 
-            # st.write('Im model', model)
-            # st.write(f'Model {model} know about selected columns: ', selected_features)
-            # st.write('Dataset Selected: ', df_selected)
-            # st.write('My Model Params: ', model_params)
-            # st.write('My Scores: ', df_score)
-            # st.write('My Clusters: ', df_clusters)
-            # st.write('Chart Data', chart_data)
+                    chart_data = pd.concat([df_selected, df_clusters], axis = 1)
 
-            if len(selected_features) == 2:
-                st.scatter_chart(
-                    chart_data,
-                    x=selected_features[0],
-                    y=selected_features[1],
-                    color='cluster'
-                )
+                    if len(selected_features):
+                        with st.container(height = 500 if len(selected_features) == 1 else 700, border = True):
+                            if len(selected_features) == 1:
+                                # Create a scatter plot to show the distribution of the feature with colors for clusters
+                                fig = px.strip(
+                                    chart_data,
+                                    x = selected_features[0],
+                                    y = 'cluster',
+                                    color = 'cluster',
+                                    title = f'1D Clustering Visualisation ofr {model}',
+                                    height = 400
+                                )
 
+                                fig.update_traces(marker = dict(size = 8))
+                            elif len(selected_features) == 2:
+                                fig = px.scatter(
+                                    chart_data,
+                                    x = selected_features[0],
+                                    y = selected_features[1],
+                                    color='cluster',
+                                    color_continuous_scale='cividis'
+                                )
 
+                                fig.update_layout(
+                                    height = 650,
+                                    title= f'2D Clustering Visualisation for {model}'
+                                )
 
+                                fig.update_traces(marker = dict(size = 5))
+                            elif len(selected_features) == 3:
+                                fig = px.scatter_3d(
+                                    chart_data,
+                                    x = selected_features[0],
+                                    y = selected_features[1],
+                                    z = selected_features[2],
+                                    color = 'cluster',
+                                    color_continuous_scale='inferno')
 
-# # TODO: Remove
-# st.write('Model Params: ', st.session_state.model_params)
-#
-# # TODO: Remove
-# st.write('Clusters: ', st.session_state['Cluster Dataset'])
-#
-# # TODO: Remove
-# st.write('Scores: ', st.session_state['Scores Dataset'])
+                                fig.update_layout(
+                                    title = f'3D Clustering Visualisation for {model}',
+                                    height = 660,
+                                    scene = dict(
+                                        xaxis_title= chart_data.columns[0],
+                                        yaxis_title= chart_data.columns[1],
+                                        zaxis_title= chart_data.columns[2]
+                                    )
+                                )
+
+                                fig.update_traces(marker = dict(size = 2))
+
+                            st.plotly_chart(fig, use_container_width=True)
+
+    with score_tab:
+        if st.session_state.selected_models:
+            sections = st.columns(len(st.session_state.selected_models))
+            selected_models = st.session_state.selected_models
+
+            selected_model_params = {}
+            df_score = pd.DataFrame()
+            for model in selected_models:
+                selected_model_params[model] = st.session_state.model_params[
+                    'agg' if model == 'Agglomerative' else
+                    'ms' if model == 'Mean Shift' else
+                    'birch' if model == 'BIRCH' else
+                    'hdbscan' if model == 'HDBSCAN' else
+                    'optics'
+                ]
+
+                if model == 'Agglomerative':
+                    df_score[model] = st.session_state['Scores Dataset'][f'agg_ncluster{selected_model_params[model]["Number of Clusters"]}_linkage{selected_model_params[model]["Linkage Method"].lower()}']
+                elif model == 'Mean Shift':
+                    df_score[model] = st.session_state['Scores Dataset'][f'ms_quantile{selected_model_params[model]["Quantile"]}']
+                elif model == 'BIRCH':
+                    df_score[model] = st.session_state['Scores Dataset'][f'birch_threshold{selected_model_params[model]["Threshold"]}_factor{selected_model_params[model]["Branching Factor"]}_ncluster{selected_model_params[model]["Number of Clusters"]}']
+                elif model == 'HDBSCAN':
+                    df_score[model] = st.session_state['Scores Dataset'][f'hdbscan_mincluster{selected_model_params[model]["Minimum Cluster Size"]}_minsample{selected_model_params[model]["Minimum Samples"]}']
+                elif model == 'OPTICS':
+                    df_score[model] = st.session_state['Scores Dataset'][f'optics_minsamp{selected_model_params[model]["Minimum Samples"]}_xi{selected_model_params[model]["Xi"]}']
+
+            for model, section in zip(selected_models, sections):
+                with section:
+                    st.header(f'{model}', divider = 'rainbow')
+
+                    sub_sections = st.columns(len(selected_model_params[model]))
+
+                    for i, key in enumerate(selected_model_params[model]):
+                        with sub_sections[i]:
+                            st.metric(label = f'**{key}**', value =f'{selected_model_params[model][key]}')
+
+                    st.divider()
+
+                    silhoutte_scores = (df_score[model].values[0], df_score.loc[:, df_score.columns != model].values[0])
+                    db_scores = (df_score[model].values[1], df_score.loc[:, df_score.columns != model].values[1])
+                    ch_scores = (df_score[model].values[2], df_score.loc[:, df_score.columns != model].values[2])
+                    if(len(selected_models) > 1):
+                        st.metric(label = '**Silhoutte Score**', value = round(silhoutte_scores[0], 4), delta = round((silhoutte_scores[0] - silhoutte_scores[1])[0], 4))
+                        st.metric(label = '**Davies-Bouldin Index**', value = round(db_scores[0], 4), delta = round((db_scores[0] - db_scores[1])[0], 4))
+                        st.metric(label = '**Calinski-Harabasz Score**', value = round(ch_scores[0], 4), delta = round((ch_scores[0] - ch_scores[1])[0], 4))
+                    else:
+                        st.metric(label = '**Silhoutte Score**', value = round(silhoutte_scores[0], 4))
+                        st.metric(label = '**Davies-Bouldin Index**', value = round(db_scores[0], 4))
+                        st.metric(label = '**Calinski-Harabasz Score**', value = round(ch_scores[0], 4))
