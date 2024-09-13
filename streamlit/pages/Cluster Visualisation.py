@@ -1,7 +1,5 @@
 import streamlit as st
 import pandas as pd
-import sys
-
 import plotly.express as px
 
 st.set_page_config(
@@ -12,14 +10,13 @@ st.set_page_config(
 )
 
 if 'initialised' not in st.session_state:
-    sys.path.append(r'C:\Users\hp\Downloads\Machine Learning Assignment')
-    st.session_state['Original Dataset'] = pd.read_csv(r'../sampled_data/sampled_srs_preprocessed_knn_n3.csv', index_col = 'CUST_ID')
-    st.session_state['PCA Dataset'] = pd.read_csv(r'../dimension_reduced_data/knn3_pca.csv', index_col = 'CUST_ID')
-    st.session_state['t-SNE Dataset'] = pd.read_csv(r'../dimension_reduced_data/knn3_tsne3.csv', index_col = 'CUST_ID')
-    st.session_state['UMAP Dataset'] = pd.read_csv(r'../dimension_reduced_data/knn3_umap3.csv', index_col = 'CUST_ID')
+    st.session_state['Original Dataset'] = pd.read_csv(r'./data/sampled_srs_preprocessed_knn_n3.csv', index_col = 'CUST_ID')
+    st.session_state['PCA Dataset'] = pd.read_csv(r'./data/knn3_pca.csv', index_col = 'CUST_ID')
+    st.session_state['t-SNE Dataset'] = pd.read_csv(r'./data/knn3_tsne3.csv', index_col = 'CUST_ID')
+    st.session_state['UMAP Dataset'] = pd.read_csv(r'./data/knn3_umap3.csv', index_col = 'CUST_ID')
 
-    st.session_state['Cluster Dataset'] = pd.read_csv(r'../cluster_data/clusters.csv', index_col = 'CUST_ID')
-    st.session_state['Scores Dataset'] = pd.read_csv(r'../cluster_data/scores.csv', index_col = 0)
+    st.session_state['Cluster Dataset'] = pd.read_csv(r'./data/clusters.csv', index_col = 'CUST_ID')
+    st.session_state['Scores Dataset'] = pd.read_csv(r'./data/scores.csv', index_col = 0)
 
     st.session_state.model_params = {
         'agg': {
