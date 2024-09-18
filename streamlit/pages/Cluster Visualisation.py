@@ -237,7 +237,7 @@ if st.session_state.selected_models:
                                     x = selected_features[0],
                                     y = 'cluster',
                                     color = 'cluster',
-                                    title = f'1D Clustering Visualisation ofr {model}',
+                                    title = f'1D Clustering Visualisation for {model}',
                                     height = 400
                                 )
 
