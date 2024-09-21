@@ -17,3 +17,7 @@ We would like to extend our heartfelt appreciation to our lecturer and practical
 Thank you for your encouragement and for helping us grow as data scientists!
 
 We hope you find this project insightful and useful in your data science journey.
+
+### Streamlit Deployment
+Below is the link to our Streamlit Deployment
+**Link**: [Credit Card Clustering](https://jieshenmachinelearning.streamlit.app/)
