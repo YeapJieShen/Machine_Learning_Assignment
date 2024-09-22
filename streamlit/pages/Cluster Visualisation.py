@@ -179,7 +179,7 @@ if st.session_state.selected_models:
                 options = st.session_state[st.session_state.selected_dataset].columns,
                 max_selections = 3,
                 help = 'Select up to 3 features to compare',
-                placeholder = 'Select up to 2 features',
+                placeholder = 'Select up to 3 features',
                 key = 'selected_features')
 
         # Step 4: Display Results
